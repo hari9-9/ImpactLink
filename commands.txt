@@ -1,0 +1,26 @@
+curl -X POST http://127.0.0.1:8000/accounts/signup/ \
+-H "Content-Type: application/json" \
+-d '{
+    "email": "test@example.com",
+    "name": "test1",
+    "password": "test123"
+}'
+
+
+curl -X POST http://127.0.0.1:8000/accounts/login/ \
+-H "Content-Type: application/json" \
+-d '{
+    "email": "test@example.com",
+    "password": "test123"
+}'
+
+
+curl -X POST http://127.0.0.1:8000/accounts/logout/ \
+-H "Content-Type: application/json" \
+-d '{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNzE1OTcxMSwiaWF0IjoxNzM3MDczMzExLCJqdGkiOiI2Y2ZlYTIyZTEwNzI0OTlkYWYwNGY2MmNjNDBkYWU2ZCIsInVzZXJfaWQiOjN9.LP9D-pcONl6o27CQvQpXovm_jqKu1x8nFyMsjp8K9MU"
+}'
+
+
+curl -X GET http://127.0.0.1:8000/linker/user-email/ \
+-H "Authorization: Bearer <access_token>"
