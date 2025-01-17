@@ -1,3 +1,9 @@
+CREATE DATABASE ImpactUrl;
+CREATE USER tester WITH PASSWORD 'test123';
+GRANT ALL PRIVILEGES ON DATABASE ImpactUrl TO tester;
+
+
+
 curl -X POST http://127.0.0.1:8000/accounts/signup/ \
 -H "Content-Type: application/json" \
 -d '{
