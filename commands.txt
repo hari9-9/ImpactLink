@@ -13,12 +13,30 @@ curl -X POST http://127.0.0.1:8000/accounts/signup/ \
 }'
 
 
+curl -X POST http://127.0.0.1:8000/accounts/signup/ \
+-H "Content-Type: application/json" \
+-d '{
+    "email": "test2@example.com",
+    "name": "test2",
+    "password": "test123"
+}'
+
+
 curl -X POST http://127.0.0.1:8000/accounts/login/ \
 -H "Content-Type: application/json" \
 -d '{
     "email": "test@example.com",
     "password": "test123"
 }'
+
+
+curl -X POST http://127.0.0.1:8000/accounts/login/ \
+-H "Content-Type: application/json" \
+-d '{
+    "email": "test2@example.com",
+    "password": "test123"
+}'
+
 
 
 curl -X POST http://127.0.0.1:8000/accounts/logout/ \
@@ -30,3 +48,11 @@ curl -X POST http://127.0.0.1:8000/accounts/logout/ \
 
 curl -X GET http://127.0.0.1:8000/linker/user-email/ \
 -H "Authorization: Bearer <access_token>"
+
+
+
+one plus 13 : http://127.0.0.1:8000/redirect/wixgNJYw 
+
+oneplue nord : http://127.0.0.1:8000/redirect/t7LVqNG0 
+
+one plue 13 second user : http://127.0.0.1:8000/redirect/eGbMf7Wg 
