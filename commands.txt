@@ -71,3 +71,6 @@ redis-cli
 
 SELECT 1
 keys *
+
+# locust
+
