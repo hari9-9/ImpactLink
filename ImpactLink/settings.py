@@ -187,3 +187,6 @@ CACHES = {
 
 # Set timeout duration (in seconds) for cache expiration
 CACHE_TTL = 60 * 60  # 1 hour cache
+
+# settings.py
+SITE_URL = "http://127.0.0.1:8000"

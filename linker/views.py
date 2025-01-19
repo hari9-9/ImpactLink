@@ -28,6 +28,7 @@ from django.db import transaction
 import hashlib
 import base64
 from .models import Product, ShortenedURL
+from django.conf import settings
 
 @csrf_exempt  # Disable CSRF for simplicity; consider proper CSRF handling in production
 @api_view(['POST'])
@@ -68,3 +69,23 @@ def shorten_url(request):
     full_short_url = f"http://127.0.0.1:8000/redirect/{shortened_url.short_url}"
 
     return JsonResponse({"short_url": full_short_url}, status=201)
+
+
+def get_product_statistics(user):
+    shortened_urls = ShortenedURL.objects.filter(user=user)
+    stats = []
+    for entry in shortened_urls:
+        stats.append({
+            'product_name': entry.product.name,
+            'original_url': entry.product.external_url,
+            'shortened_url': f"{settings.SITE_URL}/redirect/{entry.short_url}",
+            'total_clicks': entry.click_count
+        })
+    return stats
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_product_statistics(request):
+    user = request.user
+    product_stats = get_product_statistics(user)
+    return Response({'products': product_stats})
