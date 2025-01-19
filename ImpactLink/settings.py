@@ -158,3 +158,16 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+
+# RabbitMQ Broker URL (Use appropriate credentials)
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+#CELERY_BROKER_URL = 'amqp://myuser:mypassword@localhost:5672/myvhost'
+
+# Result backend (optional, for debugging purposes)
+CELERY_RESULT_BACKEND = 'rpc://'  # Or 'django-db' if django-celery-results is installed
+
+# Celery configurations
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TRACK_STARTED = True
+CELERY_TIMEZONE = 'UTC'

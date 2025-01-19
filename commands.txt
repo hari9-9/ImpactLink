@@ -56,3 +56,10 @@ one plus 13 : http://127.0.0.1:8000/redirect/wixgNJYw
 oneplue nord : http://127.0.0.1:8000/redirect/t7LVqNG0 
 
 one plue 13 second user : http://127.0.0.1:8000/redirect/eGbMf7Wg 
+
+
+celery -A ImpactLink worker --loglevel=info
+
+sudo rabbitmq-plugins enable rabbitmq_management
+rabbitmqctl status
+sudo -u rabbitmq rabbitmqctl status
