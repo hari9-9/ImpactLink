@@ -63,3 +63,11 @@ celery -A ImpactLink worker --loglevel=info
 sudo rabbitmq-plugins enable rabbitmq_management
 rabbitmqctl status
 sudo -u rabbitmq rabbitmqctl status
+
+
+## redis 
+to check if redis is working right :
+redis-cli 
+
+SELECT 1
+keys *
