@@ -8,6 +8,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import CustomUser
 from .serializers import UserSerializer, LoginSerializer
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
@@ -19,9 +21,10 @@ class UserSignupView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@method_decorator(csrf_exempt, name='dispatch')
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
-
+    
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
