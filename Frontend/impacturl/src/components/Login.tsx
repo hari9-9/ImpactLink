@@ -15,7 +15,7 @@ const Login = ({ setIsAuthenticated }: { setIsAuthenticated: (auth: boolean) => 
       localStorage.setItem('accessToken', response.access);
       localStorage.setItem('refreshToken', response.refresh);
       setIsAuthenticated(true);
-      navigate('/home');
+      navigate('/dashboard');
     } catch (error) {
       alert('Login failed. Please check your credentials.');
     }
