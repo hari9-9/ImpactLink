@@ -1,28 +1,31 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import Logout from './components/Logout';
 import Home from './components/Home';
+import { useState, useEffect } from 'react';
 
 const App = () => {
-  const isAuthenticated = localStorage.getItem('token');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem('accessToken'));
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    setIsAuthenticated(false);
+  };
 
   return (
     <Router>
       <div>
-        <nav>
-          <a href="/signup">Signup</a>
-          <a href="/login">Login</a>
-          {isAuthenticated && <a href="/home">Home</a>}
-        </nav>
-
         <Routes>
           <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route
+            path="/home"
+            element={isAuthenticated ? <Home onLogout={handleLogout} /> : <Navigate to="/login" />}
+          />
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
         </Routes>
-
-        {isAuthenticated && <Logout />}
       </div>
     </Router>
   );

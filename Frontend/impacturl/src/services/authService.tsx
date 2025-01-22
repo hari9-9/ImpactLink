@@ -26,7 +26,6 @@ export const login = async (email: string, password: string) => {
           withCredentials: true,  // Include if cookies/session authentication is used
         }
       );
-      console.log("Login Response:", response.data);
       return response.data;
     } catch (error) {
       console.error("Login error:", error.response ? error.response.data : error.message);
