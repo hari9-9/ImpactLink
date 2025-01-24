@@ -1,30 +1,87 @@
+/* Container styling */
+.dashboard-container {
+  max-width: 100%;
+  padding: 20px;
+  background-color: #121212; /* Dark background for the entire section */
+  color: #fff;
+}
+
+/* Table styling */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #000; /* Fully black table background */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Header styling */
+thead th {
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 18px;
+  padding: 15px;
+  text-align: left;
+}
+
+/* Table row and cell styling */
+tbody tr {
+  border-bottom: 1px solid #333;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #1e1e1e; /* Darker black row */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #000; /* Fully black row */
+}
+
+tbody tr:hover {
+  background-color: #333; /* Slight highlight on hover */
+}
+
+/* Table data styling */
+td {
+  padding: 15px;
+  font-size: 16px;
+  color: #ddd; /* Light gray text for contrast */
+}
+
+/* Links inside table */
+td a {
+  color: #4da6ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+td a:hover {
+  text-decoration: underline;
+  color: #66c2ff;
+}
+
+/* Total clicks number visibility */
+td:last-child {
+  font-weight: bold;
+  color: #ffcc00;
+}
+
+/* Logout and Add URL buttons */
+.logout-button,
+.add-url-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin-right: 10px;
+}
+
+.logout-button:hover,
+.add-url-button:hover {
+  background-color: #0056b3;
+}

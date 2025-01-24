@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './Dashboard.css';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Dashboard.css";
 
 interface Product {
   product_name: string;
@@ -19,14 +19,17 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProductStats = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/linker/product-stats', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        const response = await axios.get(
+          "http://127.0.0.1:8000/linker/product-stats",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
           }
-        });
+        );
         setProducts(response.data.products);
       } catch (err) {
-        setError('Failed to fetch product data.');
+        setError("Failed to fetch product data.");
       } finally {
         setLoading(false);
       }
@@ -36,23 +39,35 @@ const Dashboard = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    navigate('/login');
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/login");
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h2>Product Statistics</h2>
-        <button className="logout-button" onClick={handleLogout}>Logout</button>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+        <button
+          onClick={() => navigate("/add-url")}
+          className="add-url-button"
+        >
+          Add New URL
+        </button>
       </div>
-      <table border="1" cellPadding="10" style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table
+        border="1"
+        cellPadding="10"
+        style={{ width: "100%", borderCollapse: "collapse" }}
+      >
         <thead>
-          <tr style={{ backgroundColor: '#007bff', color: 'white' }}>
+          <tr style={{ backgroundColor: "#007bff", color: "white" }}>
             <th>Product Name</th>
             <th>Original URL</th>
             <th>Shortened URL</th>
@@ -61,10 +76,31 @@ const Dashboard = () => {
         </thead>
         <tbody>
           {products.map((product, index) => (
-            <tr key={index}>
+            <tr
+              key={index}
+              style={{
+                backgroundColor: index % 2 === 0 ? "#f2f2f2" : "#ffffff", // Alternate row colors
+              }}
+            >
               <td>{product.product_name}</td>
-              <td><a href={product.original_url} target="_blank" rel="noopener noreferrer">{product.original_url}</a></td>
-              <td><a href={product.shortened_url} target="_blank" rel="noopener noreferrer">{product.shortened_url}</a></td>
+              <td>
+                <a
+                  href={product.original_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {product.original_url}
+                </a>
+              </td>
+              <td>
+                <a
+                  href={product.shortened_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {product.shortened_url}
+                </a>
+              </td>
               <td>{product.total_clicks}</td>
             </tr>
           ))}

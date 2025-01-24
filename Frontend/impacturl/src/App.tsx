@@ -8,6 +8,7 @@ import {
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Home from "./components/Home";
+import AddURLPage from "./components/AddUrlPage";
 import Dashboard from "./components/Dashboard";
 import { useState, useEffect } from "react";
 
@@ -45,6 +46,10 @@ const App = () => {
           <Route
             path="/dashboard"
             element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-url"
+            element={isAuthenticated ? <AddURLPage /> : <Navigate to="/login" />}
           />
           <Route
             path="*"
