@@ -1,28 +1,8 @@
 from django.shortcuts import render
-
-# Create your views here.
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-
-# API accessible only to logged-in users
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def logged_in_user_email_view(request):
-    print(request.user.email)
-    print(request.user.id)
-    
-    return Response({"email": request.user.email})
-
-# API accessible to everyone
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def public_api_view(request):
-    return Response({"message": "This API is accessible without login."})
-
 from django.http import JsonResponse
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 import hashlib
@@ -30,10 +10,91 @@ import base64
 from .models import Product, ShortenedURL
 from django.conf import settings
 
-@csrf_exempt  # Disable CSRF for simplicity; consider proper CSRF handling in production
+# ------------------- Logged-in User API -------------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def logged_in_user_email_view(request):
+    """
+    API endpoint to return the email of the authenticated user.
+
+    Permissions:
+        - Requires authentication (IsAuthenticated).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        Response: JSON response containing the user's email.
+
+    Example response:
+        {
+            "email": "user@example.com"
+        }
+    """
+    print(request.user.email)
+    print(request.user.id)
+    
+    return Response({"email": request.user.email})
+
+# ------------------- Public API -------------------
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def public_api_view(request):
+    """
+    Public API endpoint accessible to everyone.
+
+    Permissions:
+        - No authentication required (AllowAny).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        Response: JSON response with a welcome message.
+
+    Example response:
+        {
+            "message": "This API is accessible without login."
+        }
+    """
+    return Response({"message": "This API is accessible without login."})
+
+# ------------------- URL Shortening API -------------------
+
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def shorten_url(request):
+    """
+    API endpoint to create a shortened URL for a given product URL.
+
+    Permissions:
+        - Requires authentication (IsAuthenticated).
+
+    Args:
+        request (HttpRequest): The HTTP request containing JSON with:
+            - product_url (str): The product's original URL (required).
+            - product_name (str): The name of the product (required).
+
+    Returns:
+        JsonResponse: JSON response containing the shortened URL.
+
+    Raises:
+        JsonResponse: If `product_url` or `product_name` is missing, returns a 400 error.
+
+    Example request:
+        {
+            "product_url": "https://example.com/product1",
+            "product_name": "Product 1"
+        }
+
+    Example response:
+        {
+            "short_url": "http://127.0.0.1:8000/redirect/abc123"
+        }
+    """
     # Parse the incoming JSON data
     data = request.data
     product_url = data.get("product_url")
@@ -70,8 +131,28 @@ def shorten_url(request):
 
     return JsonResponse({"short_url": full_short_url}, status=201)
 
+# ------------------- Product Statistics Helper Function -------------------
 
 def get_product_statistics(user):
+    """
+    Retrieves product statistics for a given user.
+
+    Args:
+        user (CustomUser): The authenticated user whose product stats are being retrieved.
+
+    Returns:
+        list: A list of dictionaries containing product statistics.
+
+    Example response:
+        [
+            {
+                'product_name': 'Product 1',
+                'original_url': 'https://example.com/product1',
+                'shortened_url': 'http://127.0.0.1:8000/redirect/abc123',
+                'total_clicks': 10
+            }
+        ]
+    """
     shortened_urls = ShortenedURL.objects.filter(user=user)
     stats = []
     for entry in shortened_urls:
@@ -83,9 +164,35 @@ def get_product_statistics(user):
         })
     return stats
 
+# ------------------- Product Statistics API -------------------
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_product_statistics(request):
+    """
+    API endpoint to retrieve product statistics for the logged-in user.
+
+    Permissions:
+        - Requires authentication (IsAuthenticated).
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        Response: JSON response containing product statistics.
+
+    Example response:
+        {
+            "products": [
+                {
+                    "product_name": "Product 1",
+                    "original_url": "https://example.com/product1",
+                    "shortened_url": "http://127.0.0.1:8000/redirect/abc123",
+                    "total_clicks": 10
+                }
+            ]
+        }
+    """
     user = request.user
     product_stats = get_product_statistics(user)
     return Response({'products': product_stats})
